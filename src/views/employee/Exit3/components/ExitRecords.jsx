@@ -23,7 +23,7 @@ const ExitRecords = () => {
   useEffect(() => {
     const fetchExits = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/exits');
+        const response = await axios.get('https://taddhrms-0adbd961bf23.herokuapp.com/api/exits');
         setExits(response.data);
       } catch (error) {
         toast({
@@ -39,7 +39,7 @@ const ExitRecords = () => {
 
   const handleGenerateReport = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/exits/report/${id}`, {
+      const response = await axios.get(`https://taddhrms-0adbd961bf23.herokuapp.com/api/exits/report/${id}`, {
         responseType: 'blob',
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -61,7 +61,7 @@ const ExitRecords = () => {
 
   const handleApproveExit = async (id) => {
     try {
-      const response = await axios.patch(`http://localhost:5000/api/exits/${id}/approve`, {
+      const response = await axios.patch(`https://taddhrms-0adbd961bf23.herokuapp.com/api/exits/${id}/approve`, {
         approvalStatus: 'Approved',
       });
       setExits((prevExits) =>
@@ -86,7 +86,7 @@ const ExitRecords = () => {
 
   const handleRejectExit = async (id) => {
     try {
-      const response = await axios.patch(`http://localhost:5000/api/exits/${id}/approve`, {
+      const response = await axios.patch(`https://taddhrms-0adbd961bf23.herokuapp.com/api/exits/${id}/approve`, {
         approvalStatus: 'Rejected',
       });
       setExits((prevExits) =>

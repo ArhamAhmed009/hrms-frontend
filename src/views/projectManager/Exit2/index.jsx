@@ -31,7 +31,7 @@ const Exit = () => {
         formData.append('resignationFile', resignationFile);
       }
 
-      const response = await fetch('http://localhost:5000/api/exits/process-exit', {
+      const response = await fetch('https://taddhrms-0adbd961bf23.herokuapp.com/api/exits/process-exit', {
         method: 'POST',
         body: formData,
       });

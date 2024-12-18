@@ -52,7 +52,7 @@ const PerformanceOverview = () => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/employees');
+        const response = await axios.get('https://taddhrms-0adbd961bf23.herokuapp.com/api/employees');
         setEmployees(response.data);
       } catch (error) {
         setError('Error fetching employees');
@@ -65,7 +65,7 @@ const PerformanceOverview = () => {
   const fetchPerformanceData = async (employeeId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/performance/${employeeId}/history`
+        `https://taddhrms-0adbd961bf23.herokuapp.com/api/performance/${employeeId}/history`
       );
       setPerformanceDetails(response.data);
       setError('');
@@ -92,7 +92,7 @@ const PerformanceOverview = () => {
     const progressValue = progressToUpdate[index] || 0;
     try {
       await axios.put(
-        `http://localhost:5000/api/performance/${employeeId}/progress`,
+        `https://taddhrms-0adbd961bf23.herokuapp.com/api/performance/${employeeId}/progress`,
         { progress: progressValue, goal }  // Ensure goal is sent with the request
       );
       fetchPerformanceData(employeeId); // Refresh performance data

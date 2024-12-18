@@ -27,7 +27,7 @@ export default function UserReports() {
   useEffect(() => {
     const fetchEmployeeData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/employees");
+        const response = await axios.get("https://taddhrms-0adbd961bf23.herokuapp.com/api/employees");
         const employees = response.data;
 
         // Calculate department-wise employee distribution
@@ -57,7 +57,7 @@ export default function UserReports() {
 
     const fetchExitRecords = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/exits");
+        const response = await axios.get("https://taddhrms-0adbd961bf23.herokuapp.com/api/exits");
         setExitRecords(response.data);
       } catch (error) {
         console.error("Error fetching exit records:", error);
@@ -66,8 +66,8 @@ export default function UserReports() {
 
     const fetchTimesheetData = async () => {
       try {
-        const weeklyResponse = await axios.get("http://localhost:5000/api/timesheets/overall/weekly");
-        const monthlyResponse = await axios.get("http://localhost:5000/api/timesheets/overall/monthly");
+        const weeklyResponse = await axios.get("https://taddhrms-0adbd961bf23.herokuapp.com/api/timesheets/overall/weekly");
+        const monthlyResponse = await axios.get("https://taddhrms-0adbd961bf23.herokuapp.com/api/timesheets/overall/monthly");
 
         setWeeklyTimesheetData(weeklyResponse.data.totalHours || 0);
         setMonthlyTimesheetData(monthlyResponse.data.totalHours || 0);
@@ -78,7 +78,7 @@ export default function UserReports() {
 
     const fetchPerformanceData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/performance/overview");
+        const response = await axios.get("https://taddhrms-0adbd961bf23.herokuapp.com/api/performance/overview");
         setPerformanceData(response.data);
         setPerformanceError(false);
       } catch (error) {

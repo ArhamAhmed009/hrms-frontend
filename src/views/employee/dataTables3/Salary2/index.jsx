@@ -24,7 +24,7 @@ export default function CandidateList() {
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/candidates');
+        const response = await axios.get('https://taddhrms-0adbd961bf23.herokuapp.com/api/candidates');
         setCandidates(response.data);
       } catch (error) {
         console.error('Error fetching candidates:', error);
@@ -36,7 +36,7 @@ export default function CandidateList() {
 
 const handleToggleShortlist = async (candidateId, currentStatus) => {
   try {
-    const updatedCandidate = await axios.put(`http://localhost:5000/api/candidates/${candidateId}/shortlist`, {
+    const updatedCandidate = await axios.put(`https://taddhrms-0adbd961bf23.herokuapp.com/api/candidates/${candidateId}/shortlist`, {
       isShortlisted: !currentStatus,  // Toggle the current status
     });
     

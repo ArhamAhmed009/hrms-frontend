@@ -24,7 +24,7 @@ export default function AddCandidate() {
     // Fetch the latest candidate to get the last candidateId
     const fetchLatestCandidateId = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/candidates');
+        const response = await axios.get('https://taddhrms-0adbd961bf23.herokuapp.com/api/candidates');
         const candidates = response.data;
 
         if (candidates.length > 0) {
@@ -60,7 +60,7 @@ export default function AddCandidate() {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/candidates', formData, {
+      const response = await axios.post('https://taddhrms-0adbd961bf23.herokuapp.com/api/candidates', formData, {
         headers: {
           'Content-Type': 'multipart/form-data', // Ensure multipart/form-data is used
         },

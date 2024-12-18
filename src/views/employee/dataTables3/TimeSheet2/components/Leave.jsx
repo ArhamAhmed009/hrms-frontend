@@ -32,7 +32,7 @@ const LeaveManagement = () => {
   const fetchLeaves = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:5000/api/leaves/requests');
+      const response = await axios.get('https://taddhrms-0adbd961bf23.herokuapp.com/api/leaves/requests');
       const leaveData = response.data.map((leave) => ({
         ...leave,
         status: leave.status || '', // Initialize the status for each leave request
@@ -53,7 +53,7 @@ const LeaveManagement = () => {
   const handleStatusUpdate = async (leaveId, employeeId) => {
     const leaveToUpdate = leaves.find((leave) => leave._id === leaveId);
     try {
-      await axios.put(`http://localhost:5000/api/leaves/requests/${employeeId}/status`, {
+      await axios.put(`https://taddhrms-0adbd961bf23.herokuapp.com/api/leaves/requests/${employeeId}/status`, {
         status: leaveToUpdate.status,
       });
       fetchLeaves(); // Refresh leave data after updating status

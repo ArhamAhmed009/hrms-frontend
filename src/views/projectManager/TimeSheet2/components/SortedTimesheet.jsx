@@ -28,7 +28,7 @@ export default function SortedTimeSheets() {
   // Fetch Sorted Time Sheets
   const fetchSortedTimeSheets = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/timesheets");
+      const response = await axios.get("https://taddhrms-0adbd961bf23.herokuapp.com/api/timesheets");
       setTimeSheets(response.data);
     } catch (error) {
       toast({

@@ -24,7 +24,7 @@ const AddPerformance = () => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/employees');
+        const response = await axios.get('https://taddhrms-0adbd961bf23.herokuapp.com/api/employees');
         setEmployees(response.data);
       } catch (error) {
         console.error('Error fetching employees:', error);
@@ -46,7 +46,7 @@ const AddPerformance = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/performance', {
+      const response = await axios.post('https://taddhrms-0adbd961bf23.herokuapp.com/api/performance', {
         employeeId: selectedEmployeeId,
         goal,
         startDate,

@@ -35,7 +35,7 @@ export default function LeaveRequest() {
   // Fetch leave requests for the logged-in employee
 //   const fetchLeaveRequests = async () => {
 //     try {
-//       const response = await axios.get(`http://localhost:5000/api/leaves/${employeeId}`);
+//       const response = await axios.get(`https://taddhrms-0adbd961bf23.herokuapp.com/api/leaves/${employeeId}`);
 //       setLeaveRequests(response.data);
 //     } catch (error) {
 //       console.error('Error fetching leave requests:', error.message);
@@ -60,7 +60,7 @@ export default function LeaveRequest() {
         reason,
       };
 
-      const response = await axios.post('http://localhost:5000/api/leaves/request', requestData);
+      const response = await axios.post('https://taddhrms-0adbd961bf23.herokuapp.com/api/leaves/request', requestData);
       toast({
         title: 'Success',
         description: 'Leave request submitted successfully.',

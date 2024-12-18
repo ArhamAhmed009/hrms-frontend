@@ -26,7 +26,7 @@ export default function EmployeesTable({ setDepartmentData, setTotalEmployees })
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/employees");
+        const response = await axios.get("https://taddhrms-0adbd961bf23.herokuapp.com/api/employees");
         setEmployees(response.data);
         setTotalEmployees(response.data.length);
         calculateDepartmentData(response.data);
@@ -61,7 +61,7 @@ export default function EmployeesTable({ setDepartmentData, setTotalEmployees })
   const updateAvailability = async (id, newAvailability) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/employees/${id}/availability`,
+        `https://taddhrms-0adbd961bf23.herokuapp.com/api/employees/${id}/availability`,
         { availability: newAvailability }
       );
       setEmployees((prevEmployees) =>

@@ -48,14 +48,14 @@ export default function Overview() {
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        const candidateResponse = await axios.get("http://localhost:5000/api/candidates");
+        const candidateResponse = await axios.get("https://taddhrms-0adbd961bf23.herokuapp.com/api/candidates");
         const shortlisted = candidateResponse.data.filter(candidate => candidate.isShortlisted);
         setShortlistedCandidates(shortlisted);
 
-        const employerResponse = await axios.get("http://localhost:5000/api/employees/available");
+        const employerResponse = await axios.get("https://taddhrms-0adbd961bf23.herokuapp.com/api/employees/available");
         setEmployers(employerResponse.data);
 
-        const interviewResponse = await axios.get("http://localhost:5000/api/interviews");
+        const interviewResponse = await axios.get("https://taddhrms-0adbd961bf23.herokuapp.com/api/interviews");
         setScheduledInterviews(interviewResponse.data);
         const lastInterview = interviewResponse.data[interviewResponse.data.length - 1];
         const lastInterviewId = lastInterview ? lastInterview.interviewId : "INT000";
@@ -124,7 +124,7 @@ export default function Overview() {
     };
 
     try {
-      const response = await axios.post('http://localhost:5000/api/interviews', interviewData);
+      const response = await axios.post('https://taddhrms-0adbd961bf23.herokuapp.com/api/interviews', interviewData);
       alert('Interview scheduled successfully!');
       setScheduledInterviews([...scheduledInterviews, response.data]);
     } catch (error) {

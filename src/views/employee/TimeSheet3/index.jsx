@@ -28,7 +28,7 @@ export default function TimeSheet() {
   const fetchTimeSheets = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/timesheets/${employeeId}`
+        `https://taddhrms-0adbd961bf23.herokuapp.com/api/timesheets/${employeeId}`
       );
       setTimeSheets(response.data);
     } catch (error) {
@@ -52,7 +52,7 @@ export default function TimeSheet() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/timesheets",
+        "https://taddhrms-0adbd961bf23.herokuapp.com/api/timesheets",
         timeSheetData
       );
       toast({

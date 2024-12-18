@@ -11,7 +11,7 @@ export default function Allowances() {
   useEffect(() => {
     const fetchAllowances = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/salaries/employee/${id}/allowances`);
+        const response = await axios.get(`https://taddhrms-0adbd961bf23.herokuapp.com/api/salaries/employee/${id}/allowances`);
         setAllowances(response.data);
       } catch (error) {
         toast({

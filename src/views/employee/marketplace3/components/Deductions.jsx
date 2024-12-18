@@ -12,7 +12,7 @@ export default function Deductions() {
     const fetchDeductions = async () => {
       try {
         // Updated API route to fetch only deductions by employeeId
-        const response = await axios.get(`http://localhost:5000/api/salaries/employee/${id}/deductions`);
+        const response = await axios.get(`https://taddhrms-0adbd961bf23.herokuapp.com/api/salaries/employee/${id}/deductions`);
         setDeductions(response.data); // We are assuming the API returns only the deductions
       } catch (error) {
         toast({

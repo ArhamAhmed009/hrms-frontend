@@ -19,7 +19,7 @@ export default function AddEmployee() {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/employees");
+        const response = await axios.get("https://taddhrms-0adbd961bf23.herokuapp.com/api/employees");
         const employees = response.data;
         if (employees.length > 0) {
           const latestEmployeeId = employees
@@ -49,7 +49,7 @@ export default function AddEmployee() {
     };
 
     try {
-      const response = await axios.post("http://localhost:5000/api/employees", employeeData);
+      const response = await axios.post("https://taddhrms-0adbd961bf23.herokuapp.com/api/employees", employeeData);
       console.log("Employee added successfully:", response.data);
       setMessage(`Employee added successfully! Email: ${response.data.email}, Password: ${response.data.password}`);
       navigate('/admin/employee');

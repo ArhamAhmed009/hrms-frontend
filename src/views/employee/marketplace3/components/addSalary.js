@@ -51,7 +51,7 @@ export default function AddSalary() {
     };
 
     try {
-      const response = await axios.post("http://localhost:5000/api/salaries", salaryData);
+      const response = await axios.post("https://taddhrms-0adbd961bf23.herokuapp.com/api/salaries", salaryData);
       console.log("Salary added successfully:", response.data);
       setMessage("Salary added successfully!");
       toast({

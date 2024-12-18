@@ -36,7 +36,7 @@ export default function SalaryOverview() {
         }
 
         // Adjust API endpoint to match your route configuration
-        const response = await axios.get(`http://localhost:5000/api/salaries/employee/${employeeId}/salaries`);
+        const response = await axios.get(`https://taddhrms-0adbd961bf23.herokuapp.com/api/salaries/employee/${employeeId}/salaries`);
         setSalaries(response.data);
       } catch (error) {
         toast({
@@ -53,7 +53,7 @@ export default function SalaryOverview() {
 
   const handleGenerateSlip = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/salaries/${id}/salary-slip`, { responseType: 'blob' });
+      const response = await axios.get(`https://taddhrms-0adbd961bf23.herokuapp.com/api/salaries/${id}/salary-slip`, { responseType: 'blob' });
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;

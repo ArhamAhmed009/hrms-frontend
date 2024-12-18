@@ -32,7 +32,7 @@ export default function EmployeeTimesheet() {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/employees");
+        const response = await axios.get("https://taddhrms-0adbd961bf23.herokuapp.com/api/employees");
         setEmployeeList(response.data);
       } catch (error) {
         console.error("Error fetching employee list:", error);
@@ -48,14 +48,14 @@ export default function EmployeeTimesheet() {
     try {
       // Fetch weekly timesheet data for specific employee
       const weeklyResponse = await axios.get(
-        `http://localhost:5000/api/timesheets/${employeeId}/weekly-report`
+        `https://taddhrms-0adbd961bf23.herokuapp.com/api/timesheets/${employeeId}/weekly-report`
       );
       setTimesheetWeeklyData(weeklyResponse.data.timeSheets || []);
       setWeeklyHours(weeklyResponse.data.totalHours || 0);
 
       // Fetch monthly timesheet data for specific employee
       const monthlyResponse = await axios.get(
-        `http://localhost:5000/api/timesheets/${employeeId}/monthly-report`
+        `https://taddhrms-0adbd961bf23.herokuapp.com/api/timesheets/${employeeId}/monthly-report`
       );
       setTimesheetMonthlyData(monthlyResponse.data.timeSheets || []);
       setMonthlyHours(monthlyResponse.data.totalHours || 0);

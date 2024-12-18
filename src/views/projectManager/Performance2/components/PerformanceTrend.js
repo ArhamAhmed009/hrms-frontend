@@ -11,7 +11,7 @@ const PerformanceTrend = ({ employeeId }) => {
     // Fetch performance records over time for the employee
     const fetchPerformanceData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/performance/${employeeId}/history`);
+        const response = await axios.get(`https://taddhrms-0adbd961bf23.herokuapp.com/api/performance/${employeeId}/history`);
         setPerformanceData(response.data);
       } catch (error) {
         console.error('Error fetching performance data:', error);
