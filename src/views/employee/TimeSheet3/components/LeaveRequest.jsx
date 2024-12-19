@@ -12,6 +12,7 @@ import {
   useToast,
   Heading,
   Divider,
+  Badge,
 } from '@chakra-ui/react';
 import axios from 'axios';
 
@@ -21,46 +22,76 @@ export default function LeaveRequest() {
   const [endDate, setEndDate] = useState('');
   const [reason, setReason] = useState('');
   const [leaveRequests, setLeaveRequests] = useState([]);
+  const [leaveBalance, setLeaveBalance] = useState(0); // Leave balance
   const toast = useToast();
 
-  // Fetch employeeId from localStorage or from your Auth context
-  const employeeId = localStorage.getItem('employeeId'); 
+  // Fetch employeeId string from localStorage
+  const employeeId = localStorage.getItem('employeeId') || 'E092';
 
-//   useEffect(() => {
-//     if (employeeId) {
-//       fetchLeaveRequests();
-//     }
-//   }, [employeeId]);
+  const API_URL = 'http://localhost:5000/api/leaves';
+
+  useEffect(() => {
+    if (employeeId) {
+      fetchLeaveRequests();
+      fetchLeaveBalance();
+    }
+  }, [employeeId]);
+
+  // Fetch leave balance
+  const fetchLeaveBalance = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/balance/${employeeId}`);
+      setLeaveBalance(response.data.leaveBalance);
+    } catch (error) {
+      console.error('Error fetching leave balance:', error.message);
+      toast({
+        title: 'Error',
+        description: 'Could not fetch leave balance.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
 
   // Fetch leave requests for the logged-in employee
-//   const fetchLeaveRequests = async () => {
-//     try {
-//       const response = await axios.get(`https://taddhrms-0adbd961bf23.herokuapp.com/api/leaves/${employeeId}`);
-//       setLeaveRequests(response.data);
-//     } catch (error) {
-//       console.error('Error fetching leave requests:', error.message);
-//       toast({
-//         title: 'Error',
-//         description: 'Could not fetch leave requests.',
-//         status: 'error',
-//         duration: 3000,
-//         isClosable: true,
-//       });
-//     }
-//   };
+// Fetch leave requests for the logged-in employee
+const fetchLeaveRequests = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/requests/${employeeId}`);
+    setLeaveRequests(response.data);
+  } catch (error) {
+    console.error('Error fetching leave requests:', error);
+
+    // Check for response error from the API
+    const errorMessage =
+      error.response && error.response.data && error.response.data.error
+        ? error.response.data.error
+        : 'Could not fetch leave requests.';
+
+    // Display the API error in the toast
+    toast({
+      title: 'Error',
+      description: errorMessage,
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+    });
+  }
+};
 
   // Submit a new leave request
   const handleRequestLeave = async () => {
     try {
       const requestData = {
-        employeeId,
+        employeeId, // Send employeeId string
         leaveType,
         startDate,
         endDate,
         reason,
       };
 
-      const response = await axios.post('https://taddhrms-0adbd961bf23.herokuapp.com/api/leaves/request', requestData);
+      await axios.post(`${API_URL}/request`, requestData);
       toast({
         title: 'Success',
         description: 'Leave request submitted successfully.',
@@ -74,9 +105,10 @@ export default function LeaveRequest() {
       setStartDate('');
       setEndDate('');
       setReason('');
-      
-      // Fetch updated leave requests
-    //   fetchLeaveRequests();
+
+      // Refresh leave requests and balance
+      fetchLeaveRequests();
+      fetchLeaveBalance();
     } catch (error) {
       console.error('Error submitting leave request:', error.message);
       toast({
@@ -91,6 +123,14 @@ export default function LeaveRequest() {
 
   return (
     <Box p="40px" bg="gray.50" boxShadow="lg" borderRadius="lg" maxW="600px" mx="auto" mt="8">
+      {/* Leave Balance */}
+      <Box mb="6" textAlign="center">
+        <Badge colorScheme="teal" fontSize="lg" p="10px" borderRadius="lg" boxShadow="md">
+          Leave Balance: {leaveBalance} days
+        </Badge>
+      </Box>
+
+      {/* Leave Request Form */}
       <Heading size="lg" mb="4" textAlign="center" color="teal.600">
         Request Leave
       </Heading>
@@ -147,7 +187,8 @@ export default function LeaveRequest() {
 
       <Divider my="8" />
 
-      {/* <Heading size="md" mb="4" color="teal.600">
+      {/* Leave Requests */}
+      <Heading size="md" mb="4" color="teal.600">
         My Leave Requests
       </Heading>
       {leaveRequests.length === 0 ? (
@@ -164,7 +205,7 @@ export default function LeaveRequest() {
             </Box>
           ))}
         </Stack>
-      )} */}
+      )}
     </Box>
   );
 }

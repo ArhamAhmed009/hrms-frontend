@@ -30,6 +30,8 @@ import Exit from 'views/admin/Exit';
 import ExitRecordsTable from 'views/admin/Exit/components/ExitRecords';
 import SortedTimeSheets from 'views/admin/TimeSheet/components/SortedTimesheet';
 import EvaluationOverview from 'views/admin/profile/components/EvaluationOverview';
+import LoanManagementHR from 'views/admin/loan/LoanManagement';
+import LoanRequest from 'views/admin/loan/LoanRequest'
 // Auth Imports
 import SignInCentered from 'views/auth/signIn';
 
@@ -139,6 +141,20 @@ const routes = [
     secondary: true,
   },
   {
+    name: 'Loan',
+    layout: '/admin',
+    path: '/Loan',
+    icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+    component: <LoanManagementHR />,
+  },
+  {
+    name: 'Loan Request',
+    layout: '/admin',
+    path: '/loanRequest',
+    icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+    component: <LoanRequest />,
+  },
+  {
     name: 'Timesheet',
     layout: '/admin',
     path: '/timesheetSorted',
@@ -168,6 +184,22 @@ const routes = [
     icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
     component: <LeaveManagement />, // Using the employee-specific report component
   },
+
+  {
+    name: 'Exit',
+    layout: '/admin',
+    path: '/exit',
+    icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+    component: <Exit />,
+  },
+
+  {
+    name: 'Exit Records',
+    layout: '/admin',
+    path: '/exit/records',
+    icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
+    component: <ExitRecordsTable />,
+  },
   {
     name: 'Performance',
     layout: '/admin',
@@ -188,21 +220,6 @@ const routes = [
     path: '/performance/performanceEmployee',
     icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
     component: <AddPerformance />,
-  },
-  {
-    name: 'Exit',
-    layout: '/admin',
-    path: '/exit',
-    icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
-    component: <Exit />,
-  },
-
-  {
-    name: 'Exit Records',
-    layout: '/admin',
-    path: '/exit/records',
-    icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
-    component: <ExitRecordsTable />,
   },
   
 ];

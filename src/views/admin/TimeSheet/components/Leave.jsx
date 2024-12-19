@@ -28,19 +28,27 @@ const LeaveManagement = () => {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
 
+  const API_URL = 'http://localhost:5000/api/leaves';
+
   // Fetch all leave requests
   const fetchLeaves = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('https://taddhrms-0adbd961bf23.herokuapp.com/api/leaves/requests');
+      const response = await axios.get(`${API_URL}/requests`);
       const leaveData = response.data.map((leave) => ({
         ...leave,
-        status: leave.status || '', // Initialize the status for each leave request
+        status: leave.status || 'Pending',
       }));
       setLeaves(leaveData);
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching leave requests:', error);
+      toast({
+        title: 'Error fetching leave requests.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
       setLoading(false);
     }
   };
@@ -49,31 +57,48 @@ const LeaveManagement = () => {
     fetchLeaves();
   }, []);
 
-  // Handle status update
   const handleStatusUpdate = async (leaveId, employeeId) => {
     const leaveToUpdate = leaves.find((leave) => leave._id === leaveId);
+    const validEmployeeId =
+      typeof leaveToUpdate.employeeId === 'object'
+        ? leaveToUpdate.employeeId._id // Extract ObjectId if populated
+        : leaveToUpdate.employeeId; // Use as is if string
+  
     try {
-      await axios.put(`https://taddhrms-0adbd961bf23.herokuapp.com/api/leaves/requests/${employeeId}/${leaveId}/status`, {
+      // Call the API to update status
+      await axios.put(`${API_URL}/requests/${leaveId}/hr-approval`, {
         status: leaveToUpdate.status,
       });
-      fetchLeaves(); // Refresh leave data after updating status
+  
       toast({
-        title: 'Status updated successfully.',
+        title: 'Leave status updated successfully.',
         status: 'success',
         duration: 3000,
         isClosable: true,
       });
     } catch (error) {
       console.error('Error updating leave status:', error);
+  
+      // Extract the error message from the API response
+      const errorMessage =
+        error.response?.data?.error || 'Unable to update the status.';
+  
       toast({
         title: 'Error updating status.',
-        description: 'Unable to update the status.',
+        description: errorMessage, // Show the error message from API
         status: 'error',
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
       });
+    } finally {
+      // Reload the page after a delay of 5 seconds
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
     }
   };
+  
+  
 
   // Handle status change for individual row
   const handleStatusChange = (leaveId, newStatus) => {
@@ -88,10 +113,10 @@ const LeaveManagement = () => {
     <Box p="40px" maxW="1200px" mx="auto">
       <VStack spacing={4} align="center" mb="10">
         <Heading as="h2" size="xl" color="teal.600" textAlign="center">
-          Leave Management
+          Leave Management (HR)
         </Heading>
         <Text fontSize="lg" color="gray.600" textAlign="center">
-          Manage employee leave requests easily by updating their status here.
+          Approve or reject employee leave requests with ease.
         </Text>
       </VStack>
 
@@ -118,12 +143,13 @@ const LeaveManagement = () => {
                 leaves.map((leave) => (
                   <Tr key={leave._id}>
                     <Td>
-                      <Flex align="center">
-                        <Icon as={FaUserCircle} boxSize={6} color="teal.500" mr="10px" />
-                        <Text fontWeight="bold" color="teal.600">
-                          {leave.employeeId}
-                        </Text>
-                      </Flex>
+                    <Flex align="center">
+  <Icon as={FaUserCircle} boxSize={6} color="teal.500" mr="10px" />
+  <Text fontWeight="bold" color="teal.600">
+    {leave.employeeId?.name || leave.employeeId || 'Unknown Employee'}
+  </Text>
+</Flex>
+
                     </Td>
                     <Td>{leave.leaveType}</Td>
                     <Td>{new Date(leave.startDate).toLocaleDateString()}</Td>
@@ -146,7 +172,7 @@ const LeaveManagement = () => {
                         justifyContent="center"
                         minWidth="100px"
                       >
-                        {leave.status || 'Pending'}
+                        {leave.status}
                       </Badge>
                     </Td>
                     <Td>
@@ -159,28 +185,24 @@ const LeaveManagement = () => {
                           onChange={(e) => handleStatusChange(leave._id, e.target.value)}
                           bg="gray.100"
                         >
-                          <option value="Approved">
-                            <Flex align="center">
-                              <Icon as={FaCheckCircle} mr="2" />
-                              Approved
-                            </Flex>
-                          </option>
-                          <option value="Rejected">
-                            <Flex align="center">
-                              <Icon as={FaTimesCircle} mr="2" />
-                              Rejected
-                            </Flex>
-                          </option>
+                          <option value="Approved">Approved</option>
+                          <option value="Rejected">Rejected</option>
                         </Select>
                         <Button
-                          colorScheme="teal"
-                          onClick={() => handleStatusUpdate(leave._id, leave.employeeId)}
-                          variant="solid"
-                          borderRadius="8px"
-                          _hover={{ bg: 'teal.600' }}
-                        >
-                          Update
-                        </Button>
+  colorScheme="teal"
+  onClick={() =>
+    handleStatusUpdate(
+      leave._id,
+      leave.employeeId._id || leave.employeeId
+    )
+  }
+  variant="solid"
+  borderRadius="8px"
+  _hover={{ bg: 'teal.600' }}
+>
+  Update
+</Button>
+
                       </Stack>
                     </Td>
                   </Tr>

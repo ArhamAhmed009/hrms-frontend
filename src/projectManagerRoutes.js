@@ -25,6 +25,8 @@ import Exit from 'views/projectManager/Exit2';
 import SortedTimeSheets from 'views/projectManager/TimeSheet2/components/SortedTimesheet';
 import LeaveRequest from 'views/projectManager/TimeSheet2/components/LeaveRequest';
 import SignInCentered from 'views/auth/signIn';
+import LoanManagementHR from 'views/projectManager/loan2/LoanManagement';
+import LoanRequest from 'views/projectManager/loan2/LoanRequest';
 
 const projectManagerRoutes = [
     {
@@ -99,6 +101,20 @@ const projectManagerRoutes = [
         icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />, // Choose an appropriate icon
         component: <Deductions />, // Reference to the Deductions component
         secondary: true,
+      },
+      {
+        name: 'Loan',
+        layout: '/projectManager',
+        path: '/Loan',
+        icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+        component: <LoanManagementHR />,
+      },
+      {
+        name: 'Loan Request',
+        layout: '/projectManager',
+        path: '/loanRequest',
+        icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+        component: <LoanRequest />,
       },
       {
         name: 'Timesheet',

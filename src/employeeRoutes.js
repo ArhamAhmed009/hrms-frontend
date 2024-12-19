@@ -32,6 +32,8 @@ import ExitRecordsTable from 'views/employee/Exit3/components/ExitRecords';
 import SortedTimeSheets from 'views/employee/TimeSheet3/components/SortedTimesheet';
 import LeaveRequest from "views/employee/TimeSheet3/components/LeaveRequest";
 import SignInCentered from 'views/auth/signIn';
+import LoanManagementHR from "views/employee/loan3/LoanManagement";
+import LoanRequest from "views/employee/loan3/LoanRequest";
 
 
 const employeeRoutes = [
@@ -125,6 +127,20 @@ const employeeRoutes = [
     //     component: <Deductions />, // Reference to the Deductions component
     //     secondary: true,
     //   },
+    {
+      name: 'Loan',
+      layout: '/employee',
+      path: '/Loan',
+      icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+      component: <LoanManagementHR />,
+    },
+    {
+      name: 'Loan Request',
+      layout: '/employee',
+      path: '/loanRequest',
+      icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+      component: <LoanRequest />,
+    },
       {
         name: 'Timesheet',
         layout: '/employee',

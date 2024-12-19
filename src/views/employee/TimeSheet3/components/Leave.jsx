@@ -30,17 +30,16 @@ const LeaveManagement = () => {
   const fetchLeaves = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('https://taddhrms-0adbd961bf23.herokuapp.com/api/leaves/requests');
+      const response = await axios.get('http://localhost:5000/api/leaves/requests');
       const leaveData = response.data.map((leave) => ({
         ...leave,
-        status: leave.status || 'Pending', // Set default status to 'Pending'
+        status: leave.status || 'Pending',
       }));
       setLeaves(leaveData);
     } catch (error) {
       console.error('Error fetching leave requests:', error);
       toast({
-        title: 'Error fetching data',
-        description: 'Could not fetch leave requests.',
+        title: 'Error fetching leave requests.',
         status: 'error',
         duration: 3000,
         isClosable: true,
@@ -49,6 +48,7 @@ const LeaveManagement = () => {
       setLoading(false);
     }
   };
+
 
   useEffect(() => {
     fetchLeaves();
