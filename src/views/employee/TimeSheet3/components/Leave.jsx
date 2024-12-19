@@ -30,7 +30,7 @@ const LeaveManagement = () => {
   const fetchLeaves = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:5000/api/leaves/requests');
+      const response = await axios.get('https://taddhrms-0adbd961bf23.herokuapp.com/api/leaves/requests');
       const leaveData = response.data.map((leave) => ({
         ...leave,
         status: leave.status || 'Pending',

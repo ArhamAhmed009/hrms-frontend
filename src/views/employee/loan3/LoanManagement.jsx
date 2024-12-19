@@ -21,7 +21,7 @@ const LoanManagementHR = () => {
   const toast = useToast();
 
   // API URL for fetching employee-specific loans
-  const API_URL = 'http://localhost:5000/api/loans';
+  const API_URL = 'https://taddhrms-0adbd961bf23.herokuapp.com/api/loans';
   
   // Get employee details from localStorage
   const employeeId = localStorage.getItem('employeeId'); // e.g., "E090"

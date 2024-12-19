@@ -21,7 +21,7 @@ const LoanManagementHR = () => {
   const [loading, setLoading] = useState(true);
   const toast = useToast();
 
-  const API_URL = 'http://localhost:5000/api/loans';
+  const API_URL = 'https://taddhrms-0adbd961bf23.herokuapp.com/api/loans';
 
   // Fetch all loan requests
   const fetchLoanRequests = async () => {

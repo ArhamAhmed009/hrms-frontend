@@ -19,7 +19,7 @@ const LoanRequest = () => {
   const toast = useToast();
 
   const employeeId = localStorage.getItem('employeeId') || 'E092'; // Replace for testing
-  const API_URL = 'http://localhost:5000/api/loans';
+  const API_URL = 'https://taddhrms-0adbd961bf23.herokuapp.com/api/loans';
 
   const handleSubmit = async () => {
     try {

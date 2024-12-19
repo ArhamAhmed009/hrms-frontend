@@ -28,7 +28,7 @@ export default function LeaveRequest() {
   // Fetch employeeId string from localStorage
   const employeeId = localStorage.getItem('employeeId') || 'E092';
 
-  const API_URL = 'http://localhost:5000/api/leaves';
+  const API_URL = 'https://taddhrms-0adbd961bf23.herokuapp.com/api/leaves';
 
   useEffect(() => {
     if (employeeId) {

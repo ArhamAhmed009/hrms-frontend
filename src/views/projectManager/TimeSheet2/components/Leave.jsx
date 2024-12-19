@@ -28,7 +28,7 @@ const LeaveManagement = () => {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
 
-  const API_URL = 'http://localhost:5000/api/leaves';
+  const API_URL = 'https://taddhrms-0adbd961bf23.herokuapp.com/api/leaves';
 
   // Fetch all leave requests
   const fetchLeaves = async () => {
