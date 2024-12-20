@@ -65,9 +65,15 @@ export default function AddSalary() {
   }, [baseSalary, isTaxFiler]);
 
   const handleAddSalary = async () => {
-    const totalOtherAllowances = otherAllowances.reduce((sum, allowance) => sum + (parseFloat(allowance.value) || 0), 0);
-    const totalOtherDeductions = otherDeductions.reduce((sum, deduction) => sum + (parseFloat(deduction.value) || 0), 0);
-
+    const totalOtherAllowances = otherAllowances.reduce(
+      (sum, allowance) => sum + (parseFloat(allowance.value) || 0),
+      0
+    );
+    const totalOtherDeductions = otherDeductions.reduce(
+      (sum, deduction) => sum + (parseFloat(deduction.value) || 0),
+      0
+    );
+  
     const salaryData = {
       employeeId,
       baseSalary: parseFloat(baseSalary),
@@ -83,18 +89,18 @@ export default function AddSalary() {
         professionalTax: parseFloat(deductions.professionalTax),
         furtherTax: parseFloat(deductions.furtherTax),
         zakat: parseFloat(deductions.zakat),
-        taxDeduction: parseFloat(deductions.taxDeduction),
-        providentFund: parseFloat(deductions.providentFund),
-        providentFundRate: parseFloat(deductions.providentFundRate), // New field
-        taxRate: parseFloat(deductions.taxRate), // New field
         otherDeductions: totalOtherDeductions,
       },
-      
       isTaxFiler,
+      providentFundRate: parseFloat(deductions.providentFundRate), // Provident fund rate outside
+      taxRate: parseFloat(deductions.taxRate), // Tax rate outside
     };
-
+  
     try {
-      const response = await axios.post("https://taddhrms-0adbd961bf23.herokuapp.com/api/salaries", salaryData);
+      const response = await axios.post(
+        "https://taddhrms-0adbd961bf23.herokuapp.com/api/salaries",
+        salaryData
+      );
       console.log("Salary added successfully:", response.data);
       setMessage("Salary added successfully!");
       toast({
@@ -104,7 +110,7 @@ export default function AddSalary() {
         duration: 3000,
         isClosable: true,
       });
-
+  
       // Reset all fields after successful submission
       setEmployeeId("");
       setBaseSalary("");
@@ -121,8 +127,8 @@ export default function AddSalary() {
         professionalTax: "",
         furtherTax: "",
         zakat: "",
-        taxDeduction: "",
-        providentFund: "",
+        providentFundRate: "",
+        taxRate: "",
         otherDeductions: "",
       });
       setOtherAllowances([{ name: "", value: "" }]);
@@ -139,6 +145,7 @@ export default function AddSalary() {
       });
     }
   };
+  
 
   const handleAllowanceChange = (field, value) => {
     setAllowances((prev) => ({
@@ -226,32 +233,20 @@ export default function AddSalary() {
   focusBorderColor="teal.500"
   variant="filled"
 />
-<HStack spacing={0}>
-  <Input
-    placeholder="Tax Rate (%)"
-    value={deductions.taxRate}
-    onChange={(e) => handleDeductionChange('taxRate', e.target.value.replace(/[^0-9.]/g, ""))} // Prevent non-numeric input
-    focusBorderColor="teal.500"
-    variant="filled"
-  />
-  <Text ml="-40px" fontSize="sm" color="gray.600" pointerEvents="none">
-    %
-  </Text>
-</HStack>
-<HStack spacing={0}>
-  <Input
-    placeholder="Provident Fund Rate (%)"
-    value={deductions.providentFundRate}
-    onChange={(e) => handleDeductionChange('providentFundRate', e.target.value.replace(/[^0-9.]/g, ""))} // Prevent non-numeric input
-    focusBorderColor="teal.500"
-    variant="filled"
-  />
-  <Text ml="-40px" fontSize="sm" color="gray.600" pointerEvents="none">
-    %
-  </Text>
-</HStack>
-
-
+<Input
+  placeholder="Provident Fund Rate (%)"
+  value={deductions.providentFundRate || ""} // Access from deductions state
+  onChange={(e) => handleDeductionChange('providentFundRate', e.target.value)}
+  focusBorderColor="teal.500"
+  variant="filled"
+/>
+<Input
+  placeholder="Tax Rate (%)"
+  value={deductions.taxRate || ""} // Access from deductions state
+  onChange={(e) => handleDeductionChange('taxRate', e.target.value)}
+  focusBorderColor="teal.500"
+  variant="filled"
+/>
 
 
 
@@ -295,8 +290,8 @@ export default function AddSalary() {
         <Input placeholder="Professional Tax" value={deductions.professionalTax} onChange={(e) => handleDeductionChange('professionalTax', e.target.value)} focusBorderColor="teal.500" variant="filled" />
         <Input placeholder="Further Tax" value={deductions.furtherTax} onChange={(e) => handleDeductionChange('furtherTax', e.target.value)} focusBorderColor="teal.500" variant="filled" />
         <Input placeholder="Zakat" value={deductions.zakat} onChange={(e) => handleDeductionChange('zakat', e.target.value)} focusBorderColor="teal.500" variant="filled" />
-        <Input placeholder="Tax Deduction" value={deductions.taxDeduction} isReadOnly focusBorderColor="teal.500" variant="filled" />
-        <Input placeholder="Provident Fund" value={deductions.providentFund} isReadOnly focusBorderColor="teal.500" variant="filled" />
+        {/* <Input placeholder="Tax Deduction" value={deductions.taxDeduction} isReadOnly focusBorderColor="teal.500" variant="filled" />
+        <Input placeholder="Provident Fund" value={deductions.providentFund} isReadOnly focusBorderColor="teal.500" variant="filled" /> */}
 
         {/* Other Deductions Section */}
         <Heading size="md" color="teal.600" mt={4}>Other Deductions</Heading>
