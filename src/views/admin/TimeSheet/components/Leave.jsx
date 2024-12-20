@@ -19,13 +19,23 @@ import {
   Badge,
   VStack,
   Icon,
+  Input,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { FaCheckCircle, FaTimesCircle, FaUserCircle } from 'react-icons/fa';
+import { FaUserCircle } from 'react-icons/fa';
 
 const LeaveManagement = () => {
   const [leaves, setLeaves] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedLeave, setSelectedLeave] = useState(null); // For rejection modal
+  const [rejectionReason, setRejectionReason] = useState('');
+  const [showModal, setShowModal] = useState(false); // Modal visibility
   const toast = useToast();
 
   const API_URL = 'https://taddhrms-0adbd961bf23.herokuapp.com/api/leaves';
@@ -35,13 +45,8 @@ const LeaveManagement = () => {
     setLoading(true);
     try {
       const response = await axios.get(`${API_URL}/requests`);
-      const leaveData = response.data.map((leave) => ({
-        ...leave,
-        status: leave.status || 'Pending',
-      }));
-      setLeaves(leaveData);
+      setLeaves(response.data);
     } catch (error) {
-      console.error('Error fetching leave requests:', error);
       toast({
         title: 'Error fetching leave requests.',
         status: 'error',
@@ -57,56 +62,58 @@ const LeaveManagement = () => {
     fetchLeaves();
   }, []);
 
-  const handleStatusUpdate = async (leaveId, employeeId) => {
-    const leaveToUpdate = leaves.find((leave) => leave._id === leaveId);
-    const validEmployeeId =
-      typeof leaveToUpdate.employeeId === 'object'
-        ? leaveToUpdate.employeeId._id // Extract ObjectId if populated
-        : leaveToUpdate.employeeId; // Use as is if string
-  
+  // Handle status change
+  const handleStatusChange = (leaveId, status) => {
+    const leave = leaves.find((l) => l._id === leaveId);
+    if (status === 'Rejected') {
+      setSelectedLeave(leave); // Set current leave for rejection modal
+      setShowModal(true);
+    } else {
+      updateLeaveStatus(leaveId, status);
+    }
+  };
+
+  // Update leave status
+  const updateLeaveStatus = async (leaveId, status, reason = '') => {
     try {
-      // Call the API to update status
       await axios.put(`${API_URL}/requests/${leaveId}/hr-approval`, {
-        status: leaveToUpdate.status,
+        status,
+        rejectionReason: reason,
       });
-  
       toast({
         title: 'Leave status updated successfully.',
         status: 'success',
         duration: 3000,
         isClosable: true,
       });
+      // fetchLeaves(); // Refresh data
     } catch (error) {
-      console.error('Error updating leave status:', error);
-  
-      // Extract the error message from the API response
-      const errorMessage =
-        error.response?.data?.error || 'Unable to update the status.';
-  
       toast({
         title: 'Error updating status.',
-        description: errorMessage, // Show the error message from API
+        description: error.response?.data?.error || 'Unable to update the status.',
         status: 'error',
-        duration: 5000,
+        duration: 3000,
         isClosable: true,
       });
     } finally {
-      // Reload the page after a delay of 5 seconds
-      setTimeout(() => {
-        window.location.reload();
-      }, 5000);
+      setShowModal(false);
+      setRejectionReason('');
     }
   };
-  
-  
 
-  // Handle status change for individual row
-  const handleStatusChange = (leaveId, newStatus) => {
-    setLeaves((prevLeaves) =>
-      prevLeaves.map((leave) =>
-        leave._id === leaveId ? { ...leave, status: newStatus } : leave
-      )
-    );
+  // Submit rejection reason
+  const handleReject = () => {
+    if (!rejectionReason.trim()) {
+      toast({
+        title: 'Rejection reason required.',
+        description: 'Please provide a reason for rejection.',
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    updateLeaveStatus(selectedLeave._id, 'Rejected', rejectionReason);
   };
 
   return (
@@ -143,13 +150,11 @@ const LeaveManagement = () => {
                 leaves.map((leave) => (
                   <Tr key={leave._id}>
                     <Td>
-                    <Flex align="center">
-  <Icon as={FaUserCircle} boxSize={6} color="teal.500" mr="10px" />
-  <Text fontWeight="bold" color="teal.600">
-    {leave.employeeId?.name || leave.employeeId || 'Unknown Employee'}
-  </Text>
-</Flex>
-
+                      <Flex align="center">
+                        <Icon as={FaUserCircle} boxSize={6} color="teal.500" mr="10px" />
+                        <Text fontWeight="bold" color="teal.600">
+                        {leave.employeeId?.name || leave.employeeId || 'Unknown Employee'}                        </Text>
+                      </Flex>
                     </Td>
                     <Td>{leave.leaveType}</Td>
                     <Td>{new Date(leave.startDate).toLocaleDateString()}</Td>
@@ -167,10 +172,6 @@ const LeaveManagement = () => {
                         }
                         p="8px"
                         borderRadius="12px"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        minWidth="100px"
                       >
                         {leave.status}
                       </Badge>
@@ -188,21 +189,6 @@ const LeaveManagement = () => {
                           <option value="Approved">Approved</option>
                           <option value="Rejected">Rejected</option>
                         </Select>
-                        <Button
-  colorScheme="teal"
-  onClick={() =>
-    handleStatusUpdate(
-      leave._id,
-      leave.employeeId._id || leave.employeeId
-    )
-  }
-  variant="solid"
-  borderRadius="8px"
-  _hover={{ bg: 'teal.600' }}
->
-  Update
-</Button>
-
                       </Stack>
                     </Td>
                   </Tr>
@@ -222,6 +208,29 @@ const LeaveManagement = () => {
           <Divider />
         </>
       )}
+
+      {/* Rejection Modal */}
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Enter Rejection Reason</ModalHeader>
+          <ModalBody>
+            <Input
+              placeholder="Rejection Reason"
+              value={rejectionReason}
+              onChange={(e) => setRejectionReason(e.target.value)}
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="ghost" mr={3} onClick={() => setShowModal(false)}>
+              Cancel
+            </Button>
+            <Button colorScheme="red" onClick={handleReject}>
+              Submit
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

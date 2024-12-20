@@ -172,46 +172,37 @@ const PerformanceOverview = () => {
         {/* Display Performance Details */}
         {performanceDetails.length > 0 ? (
           <Box bg={bgColor} p={4} borderRadius="md" boxShadow={boxShadow}>
-            <Table variant="simple" size="md" borderColor={tableBorder}>
-              <Thead>
-                <Tr>
-                  <Th>Goal</Th>
-                  <Th>Start Date</Th>
-                  <Th>End Date</Th>
-                  <Th>Progress</Th>
-                  <Th>Highest Overall Score</Th>
-                  <Th>Update Progress</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {performanceDetails.map((perf, index) => (
-                  <Tr key={perf._id}>
-                    <Td>{perf.goal || 'Not specified'}</Td>
-                    <Td>{perf.startDate ? new Date(perf.startDate).toLocaleDateString() : 'Invalid Date'}</Td>
-                    <Td>{perf.endDate ? new Date(perf.endDate).toLocaleDateString() : 'Invalid Date'}</Td>
-                    <Td>{perf.progress || 'Not available'}%</Td>
-                    <Td>{getHighestOverallScore(perf.history)}</Td>
-                    <Td>
-                      <HStack spacing={2}>
-                        <Input
-                          type="number"
-                          value={progressToUpdate[index] || ''}
-                          placeholder="Update"
-                          onChange={(e) => handleProgressChange(index, e.target.value)}
-                          maxW="80px"
-                        />
-                        <Button
-                          colorScheme="blue"
-                          onClick={() => handleProgressUpdate(selectedEmployeeId, index, perf.goal)}
-                        >
-                          Update
-                        </Button>
-                      </HStack>
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
+<Table variant="simple" size="md" borderColor={tableBorder}>
+  <Thead>
+    <Tr>
+      <Th>Goal</Th>
+      <Th>Start Date</Th>
+      <Th>End Date</Th>
+      <Th>Progress</Th>
+      <Th>Highest Overall Score</Th>
+    </Tr>
+  </Thead>
+  <Tbody>
+    {performanceDetails.map((perf, index) => (
+      <Tr key={perf._id}>
+        <Td>{perf.goal || 'Not specified'}</Td>
+        <Td>
+          {perf.startDate
+            ? new Date(perf.startDate).toLocaleDateString()
+            : 'Invalid Date'}
+        </Td>
+        <Td>
+          {perf.endDate
+            ? new Date(perf.endDate).toLocaleDateString()
+            : 'Invalid Date'}
+        </Td>
+        <Td>{perf.progress || 'Not available'}%</Td>
+        <Td>{getHighestOverallScore(perf.history)}</Td>
+      </Tr>
+    ))}
+  </Tbody>
+</Table>
+
           </Box>
         ) : (
           <Text textAlign="center" color="gray.500" fontSize="lg">

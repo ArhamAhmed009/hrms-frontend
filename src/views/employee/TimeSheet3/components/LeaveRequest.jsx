@@ -195,17 +195,24 @@ const fetchLeaveRequests = async () => {
         <Text>No leave requests found.</Text>
       ) : (
         <Stack spacing={4}>
-          {leaveRequests.map((leave) => (
-            <Box key={leave._id} p={4} bg="white" borderRadius="md" boxShadow="md">
-              <Text fontWeight="bold">Leave Type: {leave.leaveType}</Text>
-              <Text>Start Date: {new Date(leave.startDate).toLocaleDateString()}</Text>
-              <Text>End Date: {new Date(leave.endDate).toLocaleDateString()}</Text>
-              <Text>Reason: {leave.reason}</Text>
-              <Text>Status: {leave.status || 'Pending'}</Text>
-            </Box>
-          ))}
-        </Stack>
-      )}
+        {leaveRequests.map((leave) => (
+          <Box key={leave._id} p={4} bg="white" borderRadius="md" boxShadow="md">
+            <Text fontWeight="bold">Leave Type: {leave.leaveType}</Text>
+            <Text>Start Date: {new Date(leave.startDate).toLocaleDateString()}</Text>
+            <Text>End Date: {new Date(leave.endDate).toLocaleDateString()}</Text>
+            <Text>Reason: {leave.reason}</Text>
+            <Text>Status: {leave.status || 'Pending'}</Text>
+    
+            {/* Show rejection reason if status is 'Rejected' */}
+            {leave.status === 'Rejected' && leave.rejectionReason && (
+              <Text color="red.500" fontWeight="bold">
+                Rejection Reason: {leave.rejectionReason}
+              </Text>
+            )}
+          </Box>
+        ))}
+      </Stack>
+    )}
     </Box>
   );
 }

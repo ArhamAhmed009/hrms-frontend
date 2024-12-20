@@ -44,10 +44,19 @@ export default function AddSalary() {
 
   useEffect(() => {
     // Adjust tax rate based on tax filer status
-    const taxRate = isTaxFiler ? 0.06 : 0.12; // Lower tax rate for filers
-    const calculatedTaxDeduction = baseSalary ? parseFloat(baseSalary) * taxRate : 0;
-    const calculatedProvidentFund = baseSalary ? parseFloat(baseSalary) * 0.05 : 0;
+    const taxRate = deductions.taxRate
+    ? parseFloat(deductions.taxRate) / 100
+    : isTaxFiler
+    ? 0.06
+    : 0.12; // User input overrides default
+    const providentFundRate = deductions.providentFundRate
+    ? parseFloat(deductions.providentFundRate) / 100
+    : 0.05; // User input overrides default
+    
 
+    const calculatedTaxDeduction = baseSalary ? parseFloat(baseSalary) * taxRate : 0;
+    const calculatedProvidentFund = baseSalary ? parseFloat(baseSalary) * providentFundRate : 0;
+    
     setDeductions((prevDeductions) => ({
       ...prevDeductions,
       taxDeduction: calculatedTaxDeduction.toFixed(2),
@@ -76,8 +85,11 @@ export default function AddSalary() {
         zakat: parseFloat(deductions.zakat),
         taxDeduction: parseFloat(deductions.taxDeduction),
         providentFund: parseFloat(deductions.providentFund),
+        providentFundRate: parseFloat(deductions.providentFundRate), // New field
+        taxRate: parseFloat(deductions.taxRate), // New field
         otherDeductions: totalOtherDeductions,
       },
+      
       isTaxFiler,
     };
 
@@ -207,13 +219,41 @@ export default function AddSalary() {
           focusBorderColor="teal.500"
           variant="filled"
         />
-        <Input
-          placeholder="Base Salary"
-          value={baseSalary}
-          onChange={(e) => setBaseSalary(e.target.value)}
-          focusBorderColor="teal.500"
-          variant="filled"
-        />
+<Input
+  placeholder="Base Salary"
+  value={baseSalary}
+  onChange={(e) => setBaseSalary(e.target.value)}
+  focusBorderColor="teal.500"
+  variant="filled"
+/>
+<HStack spacing={0}>
+  <Input
+    placeholder="Tax Rate (%)"
+    value={deductions.taxRate}
+    onChange={(e) => handleDeductionChange('taxRate', e.target.value.replace(/[^0-9.]/g, ""))} // Prevent non-numeric input
+    focusBorderColor="teal.500"
+    variant="filled"
+  />
+  <Text ml="-40px" fontSize="sm" color="gray.600" pointerEvents="none">
+    %
+  </Text>
+</HStack>
+<HStack spacing={0}>
+  <Input
+    placeholder="Provident Fund Rate (%)"
+    value={deductions.providentFundRate}
+    onChange={(e) => handleDeductionChange('providentFundRate', e.target.value.replace(/[^0-9.]/g, ""))} // Prevent non-numeric input
+    focusBorderColor="teal.500"
+    variant="filled"
+  />
+  <Text ml="-40px" fontSize="sm" color="gray.600" pointerEvents="none">
+    %
+  </Text>
+</HStack>
+
+
+
+
 
         {/* Tax Filer Checkbox with FormControl for better styling */}
         <FormControl display="flex" alignItems="center" p={4} bg="white" borderRadius="md" boxShadow="sm">
