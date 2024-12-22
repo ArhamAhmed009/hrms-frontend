@@ -11,9 +11,13 @@ import {
   Tr,
   Th,
   Td,
+  FormControl,
+  FormLabel,
+  IconButton,
   useToast,
-  Flex,
+  Heading,
 } from "@chakra-ui/react";
+import { FaSyncAlt } from "react-icons/fa"; // Font Awesome icon for refresh
 import axios from "axios";
 
 export default function TimeSheet() {
@@ -23,6 +27,14 @@ export default function TimeSheet() {
   const [endTime, setEndTime] = useState("");
   const [timeSheets, setTimeSheets] = useState([]);
   const toast = useToast();
+
+  // Fetch Employee ID from local storage on component mount
+  useEffect(() => {
+    const storedEmployeeId = localStorage.getItem("employeeId");
+    if (storedEmployeeId) {
+      setEmployeeId(storedEmployeeId);
+    }
+  }, []);
 
   // Fetch Time Sheets for a specific employee
   const fetchTimeSheets = async () => {
@@ -46,8 +58,8 @@ export default function TimeSheet() {
     const timeSheetData = {
       employeeId,
       date,
-      checkInTime: new Date(`${date}T${startTime}`), // Combine date and start time
-      checkOutTime: new Date(`${date}T${endTime}`),  // Combine date and end time
+      checkInTime: new Date(`${date}T${startTime}`),
+      checkOutTime: new Date(`${date}T${endTime}`),
     };
 
     try {
@@ -72,47 +84,74 @@ export default function TimeSheet() {
   };
 
   return (
-    <Box p="40px">
-      <Stack spacing={4}>
-        <Text fontSize="2xl" fontWeight="bold" textAlign="center">
+    <Box p="6" maxW="container.md" mx="auto" boxShadow="lg" rounded="md" bg="white">
+      <Stack spacing={6}>
+        <Heading fontSize="2xl" fontWeight="bold" textAlign="center" color="teal.500">
           Add Time Sheet
-        </Text>
-        <Input
-          placeholder="Employee ID"
-          value={employeeId}
-          onChange={(e) => setEmployeeId(e.target.value)}
-        />
-        <Input
-          type="date"
-          placeholder="Date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
-        <Input
-          type="time"
-          placeholder="Check in"
-          value={startTime}
-          onChange={(e) => setStartTime(e.target.value)}
-        />
-        <Input
-          type="time"
-          placeholder="Check out"
-          value={endTime}
-          onChange={(e) => setEndTime(e.target.value)}
-        />
+        </Heading>
+
+        <FormControl id="employeeId" isReadOnly>
+          <FormLabel>Employee ID</FormLabel>
+          <Input
+            placeholder="Employee ID"
+            value={employeeId}
+            onChange={(e) => setEmployeeId(e.target.value)}
+          />
+        </FormControl>
+
+        <FormControl id="date">
+          <FormLabel>Date</FormLabel>
+          <Input
+            type="date"
+            placeholder="Date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+        </FormControl>
+
+        <FormControl id="checkInTime">
+          <FormLabel>Check In Time</FormLabel>
+          <Input
+            type="time"
+            placeholder="Check in"
+            value={startTime}
+            onChange={(e) => setStartTime(e.target.value)}
+          />
+        </FormControl>
+
+        <FormControl id="checkOutTime">
+          <FormLabel>Check Out Time</FormLabel>
+          <Input
+            type="time"
+            placeholder="Check out"
+            value={endTime}
+            onChange={(e) => setEndTime(e.target.value)}
+          />
+        </FormControl>
+
         <Button colorScheme="blue" onClick={handleAddTimeSheet}>
           Add Time Sheet
         </Button>
 
-        <Text fontSize="2xl" fontWeight="bold" mt="20px" textAlign="center">
+        <Heading fontSize="2xl" fontWeight="bold" textAlign="center" color="teal.500" mt="10">
           Employee Time Sheets
-        </Text>
-        <Button onClick={fetchTimeSheets} colorScheme="teal">
-          Fetch Time Sheets
-        </Button>
+        </Heading>
 
-        {timeSheets.length > 0 && (
-          <Table variant="simple">
+        <Box display="flex" justifyContent="flex-end">
+          <IconButton
+            icon={<FaSyncAlt />}
+            onClick={fetchTimeSheets}
+            colorScheme="teal"
+            aria-label="Refresh Time Sheets"
+            size="lg"
+            variant="outline"
+            isRound
+            _hover={{ bg: "teal.100" }}
+          />
+        </Box>
+
+        {timeSheets.length > 0 ? (
+          <Table variant="striped" colorScheme="teal">
             <Thead>
               <Tr>
                 <Th>Employee ID</Th>
@@ -140,6 +179,10 @@ export default function TimeSheet() {
               ))}
             </Tbody>
           </Table>
+        ) : (
+          <Text textAlign="center" color="gray.500">
+            No timesheets found.
+          </Text>
         )}
       </Stack>
     </Box>

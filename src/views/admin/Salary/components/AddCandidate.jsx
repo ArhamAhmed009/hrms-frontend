@@ -54,27 +54,37 @@ export default function AddCandidate() {
     formData.append('experience', experience);
     formData.append('skills', skills.split(',').map(skill => skill.trim()));
     formData.append('education', education);
-    
+  
     if (resume) {
       formData.append('resume', resume);
     }
-
+  
+    // Debug FormData
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ': ' + pair[1]);
+    }
+  
     try {
-      const response = await axios.post('https://taddhrms-0adbd961bf23.herokuapp.com/api/candidates', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await axios.post(
+        'http://localhost:5000/api/candidates',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
       console.log('Candidate added successfully:', response.data);
-      setMessage('Candidate added successfully!');
+  
+      // Show success toast
       toast({
-        title: "Success!",
-        description: "Candidate added successfully.",
+        title: "Candidate Added",
+        description: "The candidate has been added successfully!",
         status: "success",
         duration: 3000,
         isClosable: true,
       });
-
+  
       // Reset form fields after successful submission
       setCandidateId('');
       setName('');
@@ -85,17 +95,27 @@ export default function AddCandidate() {
       setResume(null);
     } catch (error) {
       console.error('Error adding candidate:', error);
-      setMessage('Error adding candidate. Please try again.');
+  
+      // Show error toast
       toast({
         title: "Error",
-        description: "There was an issue adding the candidate.",
+        description: error.response?.data?.message || "There was an issue adding the candidate.",
         status: "error",
         duration: 3000,
         isClosable: true,
       });
     }
   };
-
+  
+  
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setResume(file);
+      console.log('Resume selected:', file);
+    }
+  };
+  
   return (
     <Box p="40px" bg="gray.50" boxShadow="lg" borderRadius="lg" maxW="600px" mx="auto" mt="8">
       <Stack spacing={6}>
@@ -176,7 +196,7 @@ export default function AddCandidate() {
               <Input
                 type="file"
                 accept="application/pdf"
-                onChange={(e) => setResume(e.target.files[0])}
+                onChange={handleFileChange}
                 opacity="0"
                 position="absolute"
                 width="100%"
