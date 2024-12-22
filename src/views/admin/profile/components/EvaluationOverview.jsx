@@ -63,7 +63,7 @@ export default function EvaluationOverview() {
 
     setPdfLoading(true);
     try {
-      const response = await axios.get(`https://taddhrms-0adbd961bf23.herokuapp.com/api/evaluations/download/${evaluation._id}`, {
+      const response = await axios.get(`http://localhost:5000/api/evaluations/download/${evaluation._id}`, {
         responseType: "blob", // Important for downloading file
       });
       
