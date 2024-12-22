@@ -39,7 +39,7 @@ const ExitRecords = () => {
 
   const handleGenerateReport = async (id) => {
     try {
-      const response = await axios.get(`https://taddhrms-0adbd961bf23.herokuapp.com/api/exits/report/${id}`, {
+      const response = await axios.get(`http://localhost:5000/api/exits/report/${id}`, {
         responseType: 'blob',
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));

@@ -65,40 +65,48 @@ export default function AddSalary() {
   }, [baseSalary, isTaxFiler]);
 
   const handleAddSalary = async () => {
-    const totalOtherAllowances = otherAllowances.reduce(
-      (sum, allowance) => sum + (parseFloat(allowance.value) || 0),
-      0
-    );
-    const totalOtherDeductions = otherDeductions.reduce(
-      (sum, deduction) => sum + (parseFloat(deduction.value) || 0),
-      0
-    );
+    // Parse and merge allowances
+    const customAllowances = otherAllowances.reduce((acc, allowance) => {
+      if (allowance.name.trim()) {
+        acc[allowance.name] = parseFloat(allowance.value) || 0; // Ensure parsing of values
+      }
+      return acc;
+    }, {});
   
+    // Parse and merge deductions
+    const customDeductions = otherDeductions.reduce((acc, deduction) => {
+      if (deduction.name.trim()) {
+        acc[deduction.name] = parseFloat(deduction.value) || 0; // Ensure parsing of values
+      }
+      return acc;
+    }, {});
+  
+    // Construct payload
     const salaryData = {
-      employeeId,
-      baseSalary: parseFloat(baseSalary),
+      employeeId: employeeId.trim(),
+      baseSalary: parseFloat(baseSalary) || 0, // Ensure parsing of baseSalary
       allowances: {
-        houseRentAllowance: parseFloat(allowances.houseRentAllowance),
-        medicalAllowance: parseFloat(allowances.medicalAllowance),
-        fuelAllowance: parseFloat(allowances.fuelAllowance),
-        childrenEducationAllowance: parseFloat(allowances.childrenEducationAllowance),
-        utilitiesAllowance: parseFloat(allowances.utilitiesAllowance),
-        otherAllowance: totalOtherAllowances,
+        ...Object.fromEntries(
+          Object.entries(allowances).map(([key, value]) => [key, parseFloat(value) || 0]) // Parse default allowances
+        ),
+        ...customAllowances, // Add custom allowances
       },
       deductions: {
-        professionalTax: parseFloat(deductions.professionalTax),
-        furtherTax: parseFloat(deductions.furtherTax),
-        zakat: parseFloat(deductions.zakat),
-        otherDeductions: totalOtherDeductions,
+        ...Object.fromEntries(
+          Object.entries(deductions).map(([key, value]) => [key, parseFloat(value) || 0]) // Parse default deductions
+        ),
+        ...customDeductions, // Add custom deductions
       },
       isTaxFiler,
-      providentFundRate: parseFloat(deductions.providentFundRate), // Provident fund rate outside
-      taxRate: parseFloat(deductions.taxRate), // Tax rate outside
+      providentFundRate: parseFloat(deductions.providentFundRate) || 0, // Parse provident fund rate
+      taxRate: parseFloat(deductions.taxRate) || 0, // Parse tax rate
     };
+  
+    console.log("Payload sent to API:", salaryData); // Debugging payload
   
     try {
       const response = await axios.post(
-        "https://taddhrms-0adbd961bf23.herokuapp.com/api/salaries",
+        "https://taddhrms-0adbd961bf23.herokuapp.com/api/salaries", // Updated to localhost
         salaryData
       );
       console.log("Salary added successfully:", response.data);
@@ -111,31 +119,10 @@ export default function AddSalary() {
         isClosable: true,
       });
   
-      // Reset all fields after successful submission
-      setEmployeeId("");
-      setBaseSalary("");
-      setIsTaxFiler(false);
-      setAllowances({
-        houseRentAllowance: "",
-        medicalAllowance: "",
-        fuelAllowance: "",
-        childrenEducationAllowance: "",
-        utilitiesAllowance: "",
-        otherAllowance: "",
-      });
-      setDeductions({
-        professionalTax: "",
-        furtherTax: "",
-        zakat: "",
-        providentFundRate: "",
-        taxRate: "",
-        otherDeductions: "",
-      });
-      setOtherAllowances([{ name: "", value: "" }]);
-      setOtherDeductions([{ name: "", value: "" }]);
+      // Reset fields after successful submission
+      resetFields();
     } catch (error) {
       console.error("Error adding salary:", error);
-      setMessage("Error adding salary. Please try again.");
       toast({
         title: "Error!",
         description: "There was an issue adding the salary. Please try again.",
@@ -144,6 +131,31 @@ export default function AddSalary() {
         isClosable: true,
       });
     }
+  };
+  
+  // Reset function for clearing fields
+  const resetFields = () => {
+    setEmployeeId("");
+    setBaseSalary("");
+    setIsTaxFiler(false);
+    setAllowances({
+      houseRentAllowance: "",
+      medicalAllowance: "",
+      fuelAllowance: "",
+      childrenEducationAllowance: "",
+      utilitiesAllowance: "",
+      otherAllowance: "",
+    });
+    setDeductions({
+      professionalTax: "",
+      furtherTax: "",
+      zakat: "",
+      providentFundRate: "",
+      taxRate: "",
+      otherDeductions: "",
+    });
+    setOtherAllowances([{ name: "", value: "" }]);
+    setOtherDeductions([{ name: "", value: "" }]);
   };
   
 

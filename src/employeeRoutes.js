@@ -66,13 +66,13 @@ const employeeRoutes = [
         path: '/employee3',
         component: <DataTables />,
       },
-      {
-        name: 'Interview',
-        layout: '/employee',
-        path: '/interview3',
-        icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
-        component: <Profile />,
-      },
+      // {
+      //   name: 'Interview',
+      //   layout: '/employee',
+      //   path: '/interview3',
+      //   icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+      //   component: <Profile />,
+      // },
 
       // {
       //   name: 'Add Employee',
@@ -141,13 +141,13 @@ const employeeRoutes = [
       icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
       component: <LoanRequest />,
     },
-      {
-        name: 'Timesheet',
-        layout: '/employee',
-        path: '/timesheetSorted',
-        icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
-        component: <SortedTimeSheets />,
-      },
+      // {
+      //   name: 'Timesheet',
+      //   layout: '/employee',
+      //   path: '/timesheetSorted',
+      //   icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+      //   component: <SortedTimeSheets />,
+      // },
       {
         name: 'Add Timesheet',
         layout: '/employee',
@@ -164,15 +164,15 @@ const employeeRoutes = [
         component: <EmployeeTimesheet />, // Using the employee-specific report component
       },
     
+      // {
+      //   name: 'Leave', // Specific Employee Timesheet Report Route
+      //   layout: '/employee',
+      //   path: '/timesheet3/leave', // Dynamic employeeId for specific employee report
+      //   icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
+      //   component: <LeaveManagement />, // Using the employee-specific report component
+      // },
       {
         name: 'Leave', // Specific Employee Timesheet Report Route
-        layout: '/employee',
-        path: '/timesheet3/leave', // Dynamic employeeId for specific employee report
-        icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
-        component: <LeaveManagement />, // Using the employee-specific report component
-      },
-      {
-        name: 'Leave Request', // Specific Employee Timesheet Report Route
         layout: '/employee',
         path: '/timesheet3/leaveRequest', // Dynamic employeeId for specific employee report
         icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,

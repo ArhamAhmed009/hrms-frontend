@@ -27,6 +27,7 @@ import LeaveRequest from 'views/projectManager/TimeSheet2/components/LeaveReques
 import SignInCentered from 'views/auth/signIn';
 import LoanManagementHR from 'views/projectManager/loan2/LoanManagement';
 import LoanRequest from 'views/projectManager/loan2/LoanRequest';
+import TimeSheet from 'views/projectManager/TimeSheet2';
 
 const projectManagerRoutes = [
     {
@@ -116,38 +117,38 @@ const projectManagerRoutes = [
         icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
         component: <LoanRequest />,
       },
+      // {
+      //   name: 'Timesheet',
+      //   layout: '/projectManager',
+      //   path: '/timesheetSorted',
+      //   icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+      //   component: <SortedTimeSheets />,
+      // },
       {
-        name: 'Timesheet',
+        name: 'Add Timesheet',
         layout: '/projectManager',
-        path: '/timesheetSorted',
+        path: '/timesheet',
         icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
-        component: <SortedTimeSheets />,
-      },
-    //   {
-    //     name: 'Add Timesheet',
-    //     layout: '/projectManager',
-    //     path: '/timesheet',
-    //     icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
-    //     component: <Timesheet />,
-    //   },
-    
-      {
-        name: 'Timesheet Report', // Specific Employee Timesheet Report Route
-        layout: '/projectManager',
-        path: '/timesheet-report/:employeeId', // Dynamic employeeId for specific employee report
-        icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
-        component: <EmployeeTimesheet />, // Using the employee-specific report component
+        component: <TimeSheet />,
       },
     
+      // {
+      //   name: 'Timesheet Report', // Specific Employee Timesheet Report Route
+      //   layout: '/projectManager',
+      //   path: '/timesheet-report/:employeeId', // Dynamic employeeId for specific employee report
+      //   icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
+      //   component: <EmployeeTimesheet />, // Using the employee-specific report component
+      // },
+    
+      // {
+      //   name: 'Leave', // Specific Employee Timesheet Report Route
+      //   layout: '/projectManager',
+      //   path: '/timesheet/leave', // Dynamic employeeId for specific employee report
+      //   icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
+      //   component: <LeaveManagement />, // Using the employee-specific report component
+      // },
       {
         name: 'Leave', // Specific Employee Timesheet Report Route
-        layout: '/projectManager',
-        path: '/timesheet/leave', // Dynamic employeeId for specific employee report
-        icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
-        component: <LeaveManagement />, // Using the employee-specific report component
-      },
-      {
-        name: 'Request Leave', // Specific Employee Timesheet Report Route
         layout: '/projectManager',
         path: '/timesheet/leave/request', // Dynamic employeeId for specific employee report
         icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,

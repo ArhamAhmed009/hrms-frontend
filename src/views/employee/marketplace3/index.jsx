@@ -53,7 +53,7 @@ export default function SalaryOverview() {
 
   const handleGenerateSlip = async (id) => {
     try {
-      const response = await axios.get(`https://taddhrms-0adbd961bf23.herokuapp.com/api/salaries/${id}/salary-slip`, { responseType: 'blob' });
+      const response = await axios.get(`http://localhost:5000/api/salaries/${id}/salary-slip`, { responseType: 'blob' });
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
@@ -109,7 +109,7 @@ export default function SalaryOverview() {
                   >
                     Generate Slip
                   </Button>
-                  <Button
+                  {/* <Button
                     ml={2}
                     colorScheme="blue"
                     size="sm"
@@ -125,7 +125,7 @@ export default function SalaryOverview() {
                     onClick={() => navigate(`/admin/salary/deductions/${salary.employeeId.employeeId}`)}
                   >
                     View Deductions
-                  </Button>
+                  </Button> */}
                 </Td>
               </Tr>
             ))}
