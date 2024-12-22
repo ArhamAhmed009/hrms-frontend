@@ -12,12 +12,24 @@ import {
   useColorModeValue,
   Flex,
   Badge,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  Text
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function EmployeesTable({ setDepartmentData, setTotalEmployees }) {
   const [employees, setEmployees] = useState([]);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const tableBg = useColorModeValue("gray.50", "gray.800");
   const tableColor = useColorModeValue("gray.800", "white");
   const headerBg = useColorModeValue("teal.500", "teal.700");
@@ -61,6 +73,11 @@ export default function EmployeesTable({ setDepartmentData, setTotalEmployees })
     });
   };
 
+  const handleViewDetails = (employee) => {
+    setSelectedEmployee(employee);
+    onOpen();
+  };
+
   return (
     <Box
       mt="40px"
@@ -94,6 +111,7 @@ export default function EmployeesTable({ setDepartmentData, setTotalEmployees })
               <Th textAlign="center" color={headerColor}>Phone Number</Th>
               <Th textAlign="center" color={headerColor}>Availability</Th>
               <Th textAlign="center" color={headerColor}>Hire Date</Th>
+              <Th textAlign="center" color={headerColor}>Actions</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -128,11 +146,44 @@ export default function EmployeesTable({ setDepartmentData, setTotalEmployees })
                 <Td textAlign="center">
                   {new Date(employee.hireDate).toLocaleDateString()}
                 </Td>
+                <Td textAlign="center">
+                  <Button
+                    colorScheme="teal"
+                    size="sm"
+                    onClick={() => handleViewDetails(employee)}
+                  >
+                    View Details
+                  </Button>
+                </Td>
               </Tr>
             ))}
           </Tbody>
         </Table>
       </TableContainer>
+
+      {/* Modal for Employee Details */}
+      {selectedEmployee && (
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Employee Details</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Box>
+                <Text><strong>Email:</strong> {selectedEmployee.email}</Text>
+                <Text><strong>Password:</strong> {selectedEmployee.password}</Text>
+                <Text><strong>Employee ID:</strong> {selectedEmployee.employeeId}</Text>
+                <Text><strong>Name:</strong> {selectedEmployee.name}</Text>
+              </Box>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={onClose}>
+                Close
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
     </Box>
   );
 }
