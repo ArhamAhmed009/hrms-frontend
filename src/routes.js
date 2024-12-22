@@ -147,13 +147,13 @@ const routes = [
     icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
     component: <LoanManagementHR />,
   },
-  {
-    name: 'Loan Request',
-    layout: '/admin',
-    path: '/loanRequest',
-    icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
-    component: <LoanRequest />,
-  },
+  // {
+  //   name: 'Loan Request',
+  //   layout: '/admin',
+  //   path: '/loanRequest',
+  //   icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+  //   component: <LoanRequest />,
+  // },
   {
     name: 'Timesheet',
     layout: '/admin',

@@ -12,7 +12,6 @@ import {
   useColorModeValue,
   Flex,
   Badge,
-  VStack,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -62,22 +61,6 @@ export default function EmployeesTable({ setDepartmentData, setTotalEmployees })
     });
   };
 
-  const updateAvailability = async (id, newAvailability) => {
-    try {
-      const response = await axios.put(
-        `https://taddhrms-0adbd961bf23.herokuapp.com/api/employees/${id}/availability`,
-        { availability: newAvailability }
-      );
-      setEmployees((prevEmployees) =>
-        prevEmployees.map((employee) =>
-          employee._id === id ? response.data : employee
-        )
-      );
-    } catch (error) {
-      console.error("Error updating availability:", error);
-    }
-  };
-
   return (
     <Box
       mt="40px"
@@ -111,7 +94,6 @@ export default function EmployeesTable({ setDepartmentData, setTotalEmployees })
               <Th textAlign="center" color={headerColor}>Phone Number</Th>
               <Th textAlign="center" color={headerColor}>Availability</Th>
               <Th textAlign="center" color={headerColor}>Hire Date</Th>
-              <Th textAlign="center" color={headerColor}>Actions</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -145,35 +127,6 @@ export default function EmployeesTable({ setDepartmentData, setTotalEmployees })
                 </Td>
                 <Td textAlign="center">
                   {new Date(employee.hireDate).toLocaleDateString()}
-                </Td>
-                <Td textAlign="center">
-                  <Button
-                    colorScheme="green"
-                    size="xs"
-                    onClick={() => updateAvailability(employee._id, "Available")}
-                    mx="1"
-                    borderRadius="md"
-                  >
-                    Available
-                  </Button>
-                  <Button
-                    colorScheme="yellow"
-                    size="xs"
-                    onClick={() => updateAvailability(employee._id, "Busy")}
-                    mx="1"
-                    borderRadius="md"
-                  >
-                    Busy
-                  </Button>
-                  <Button
-                    colorScheme="red"
-                    size="xs"
-                    onClick={() => updateAvailability(employee._id, "On Leave")}
-                    mx="1"
-                    borderRadius="md"
-                  >
-                    On Leave
-                  </Button>
                 </Td>
               </Tr>
             ))}
