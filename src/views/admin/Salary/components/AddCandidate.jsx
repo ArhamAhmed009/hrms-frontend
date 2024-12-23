@@ -9,6 +9,7 @@ import {
   FormLabel,
   Divider,
   useToast,
+  Select
 } from '@chakra-ui/react';
 import axios from 'axios';
 
@@ -145,15 +146,24 @@ export default function AddCandidate() {
         </FormControl>
 
         <FormControl>
-          <FormLabel>Position</FormLabel>
-          <Input
-            placeholder="Position"
-            value={position}
-            onChange={(e) => setPosition(e.target.value)}
-            focusBorderColor="teal.500"
-            variant="filled"
-          />
-        </FormControl>
+  <FormLabel>Position</FormLabel>
+  <Input
+    list="positions"
+    placeholder="Select or type a position"
+    value={position}
+    onChange={(e) => setPosition(e.target.value)}
+    focusBorderColor="teal.500"
+    variant="filled"
+  />
+  <datalist id="positions">
+    <option value="Developer" />
+    <option value="Business Analyst" />
+    <option value="Project Manager" />
+    <option value="Designer" />
+  </datalist>
+</FormControl>
+
+
 
         <FormControl>
           <FormLabel>Experience (Years)</FormLabel>

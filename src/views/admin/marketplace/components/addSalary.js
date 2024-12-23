@@ -21,6 +21,10 @@ export default function AddSalary() {
   const [employeeId, setEmployeeId] = useState("");
   const [baseSalary, setBaseSalary] = useState("");
   const [isTaxFiler, setIsTaxFiler] = useState(false);
+  const [salaryMonth, setSalaryMonth] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // Add loading state
+
+
   const [allowances, setAllowances] = useState({
     houseRentAllowance: "",
     medicalAllowance: "",
@@ -65,6 +69,8 @@ export default function AddSalary() {
   }, [baseSalary, isTaxFiler]);
 
   const handleAddSalary = async () => {
+    setIsLoading(true); // Start loader
+  
     // Parse and merge allowances
     const customAllowances = otherAllowances.reduce((acc, allowance) => {
       if (allowance.name.trim()) {
@@ -84,22 +90,23 @@ export default function AddSalary() {
     // Construct payload
     const salaryData = {
       employeeId: employeeId.trim(),
-      baseSalary: parseFloat(baseSalary) || 0, // Ensure parsing of baseSalary
+      baseSalary: parseFloat(baseSalary) || 0,
       allowances: {
         ...Object.fromEntries(
-          Object.entries(allowances).map(([key, value]) => [key, parseFloat(value) || 0]) // Parse default allowances
+          Object.entries(allowances).map(([key, value]) => [key, parseFloat(value) || 0])
         ),
-        ...customAllowances, // Add custom allowances
+        ...customAllowances,
       },
       deductions: {
         ...Object.fromEntries(
-          Object.entries(deductions).map(([key, value]) => [key, parseFloat(value) || 0]) // Parse default deductions
+          Object.entries(deductions).map(([key, value]) => [key, parseFloat(value) || 0])
         ),
-        ...customDeductions, // Add custom deductions
+        ...customDeductions,
       },
       isTaxFiler,
-      providentFundRate: parseFloat(deductions.providentFundRate) || 0, // Parse provident fund rate
-      taxRate: parseFloat(deductions.taxRate) || 0, // Parse tax rate
+      providentFundRate: parseFloat(deductions.providentFundRate) || 0,
+      taxRate: parseFloat(deductions.taxRate) || 0,
+      salaryMonth, // Include the salaryMonth in the payload
     };
   
     console.log("Payload sent to API:", salaryData); // Debugging payload
@@ -110,10 +117,10 @@ export default function AddSalary() {
         salaryData
       );
       console.log("Salary added successfully:", response.data);
-      setMessage("Salary added successfully!");
+      setMessage(response.data.message || "Salary added successfully!"); // Display API response message
       toast({
         title: "Success!",
-        description: "Salary added successfully.",
+        description: response.data.message || "Salary added successfully.",
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -122,16 +129,21 @@ export default function AddSalary() {
       // Reset fields after successful submission
       resetFields();
     } catch (error) {
+      const errorMessage =
+        error.response?.data?.error || "There was an issue adding the salary. Please try again."; // Extract API error message
       console.error("Error adding salary:", error);
       toast({
         title: "Error!",
-        description: "There was an issue adding the salary. Please try again.",
+        description: errorMessage, // Show specific API error message
         status: "error",
         duration: 3000,
         isClosable: true,
       });
+    } finally {
+      setIsLoading(false); // Stop loader
     }
   };
+  
   
   // Reset function for clearing fields
   const resetFields = () => {
@@ -259,6 +271,33 @@ export default function AddSalary() {
   focusBorderColor="teal.500"
   variant="filled"
 />
+<FormControl>
+  <select
+    value={salaryMonth}
+    onChange={(e) => setSalaryMonth(e.target.value)}
+    style={{
+      width: "100%",
+      padding: "10px",
+      borderRadius: "8px",
+      border: "1px solid #CBD5E0",
+      fontSize: "16px",
+    }}
+  >
+    <option value="">Select Month</option>
+    <option value="January">January</option>
+    <option value="February">February</option>
+    <option value="March">March</option>
+    <option value="April">April</option>
+    <option value="May">May</option>
+    <option value="June">June</option>
+    <option value="July">July</option>
+    <option value="August">August</option>
+    <option value="September">September</option>
+    <option value="October">October</option>
+    <option value="November">November</option>
+    <option value="December">December</option>
+  </select>
+</FormControl>
 
 
 
@@ -318,9 +357,17 @@ export default function AddSalary() {
           Add Other Deduction
         </Button>
 
-        <Button colorScheme="teal" onClick={handleAddSalary} mt={4} size="lg">
-          Save Salary
-        </Button>
+        <Button 
+  colorScheme="teal" 
+  onClick={handleAddSalary} 
+  mt={4} 
+  size="lg" 
+  isLoading={isLoading} // Loader enabled
+  loadingText="Saving"  // Optional: Text to show while loading
+>
+  Save Salary
+</Button>
+
 
         {message && <Text color="green.500" fontWeight="bold" mt={4}>{message}</Text>}
       </Stack>

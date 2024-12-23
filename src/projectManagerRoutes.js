@@ -140,15 +140,15 @@ const projectManagerRoutes = [
       //   component: <EmployeeTimesheet />, // Using the employee-specific report component
       // },
     
-      // {
-      //   name: 'Leave', // Specific Employee Timesheet Report Route
-      //   layout: '/projectManager',
-      //   path: '/timesheet/leave', // Dynamic employeeId for specific employee report
-      //   icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
-      //   component: <LeaveManagement />, // Using the employee-specific report component
-      // },
       {
         name: 'Leave', // Specific Employee Timesheet Report Route
+        layout: '/projectManager',
+        path: '/timesheet/leave', // Dynamic employeeId for specific employee report
+        icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
+        component: <LeaveManagement />, // Using the employee-specific report component
+      },
+      {
+        name: 'Request Leave', // Specific Employee Timesheet Report Route
         layout: '/projectManager',
         path: '/timesheet/leave/request', // Dynamic employeeId for specific employee report
         icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
