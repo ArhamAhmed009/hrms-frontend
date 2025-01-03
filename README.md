@@ -90,7 +90,7 @@ This project is licensed under the **MIT License**.
 ## 📬 Contact
 For any queries or issues, feel free to reach out:
 - **GitHub:** [@ArhamAhmed009](https://github.com/ArhamAhmed009)
-- **Email:** your-email@example.com (Replace with your email)
+- **Email:** arham.naeem009@gmail.com
 
 ---
 ### 🌟 If you like this project, please ⭐ the repo!
