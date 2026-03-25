@@ -2,23 +2,23 @@
 
 ![HRMS Dashboard](src/assets/img/image.png)
 
-## 🚀 Introduction
+## Introduction
 Welcome to the **HRMS (Human Resource Management System) Frontend** repository. This is the frontend of an HRMS system that helps manage employees, track attendance, process leave requests, and handle user authentication.
 
-## 🛠 Tech Stack
+## Tech Stack
 - **Frontend:** React.js, Redux (if applicable)
 - **Styling:** CSS / TailwindCSS / Bootstrap (Specify if used)
 - **Backend:** Node.js (Connected to this frontend)
 - **Database:** MongoDB (Handled via backend)
 
-## 🎯 Features
+## Features
 - ✅ Employee Management
 - ✅ Attendance Tracking
 - ✅ Leave Management
 - ✅ User Authentication (Login/Register)
 - ✅ Dashboard Analytics
 
-## 📥 Installation & Setup
+## Installation & Setup
 Follow these steps to set up the project locally:
 
 ### 1️⃣ Clone the Repository
@@ -49,7 +49,7 @@ Create a `.env` file in the root directory and configure necessary variables (if
 REACT_APP_API_URL=http://localhost:5000/api
 ```
 
-## 🧩 Folder Structure
+## Folder Structure
 ```
 hrms-frontend/
 │── src/
@@ -69,14 +69,14 @@ hrms-frontend/
 - Uses **JWT-based authentication** (if applicable)
 - Role-based access control (Admin, Employee, etc.)
 
-## 🚀 Deployment
+## Deployment
 To deploy the project on a hosting platform (e.g., Vercel, Netlify):
 ```bash
 npm run build
 ```
 Then, follow the deployment instructions for your preferred hosting service.
 
-## 🤝 Contributing
+## Contributing
 We welcome contributions! Follow these steps:
 1. **Fork** the repository
 2. **Create a new branch** (`feature-branch`)
@@ -84,14 +84,14 @@ We welcome contributions! Follow these steps:
 4. **Push to your branch** (`git push origin feature-branch`)
 5. **Create a Pull Request**
 
-## 📄 License
+## License
 This project is licensed under the **MIT License**.
 
-## 📬 Contact
+## Contact
 For any queries or issues, feel free to reach out:
 - **GitHub:** [@ArhamAhmed009](https://github.com/ArhamAhmed009)
 - **Email:** arham.naeem009@gmail.com
 
 ---
-### 🌟 If you like this project, please ⭐ the repo!
+### If you like this project, please ⭐ the repo!
 ---
